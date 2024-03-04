@@ -238,3 +238,20 @@ void sepiaFilter(image_t* image){
         }
     }
 }
+
+void getInformation(image_t* image, FILE* f){
+    if(fread(image->header, sizeof(unsigned char), HEADER_SIZE, f) != HEADER_SIZE){
+        fprintf(stderr, "Error: Unable to read image header.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    image->width = *(int*)&image->header[18];
+    image->height = *(int*)&image->header[22];
+    image->bitDepth = *(int*)&image->header[28];
+
+    printf("width : %d\n", image->width);
+    printf("height: %d\n", image->height);
+    printf("bitdepth: %d\n", image->bitDepth);
+
+    free(image);
+}

@@ -8,6 +8,12 @@ int main(int argc, char* argv[]){
     FILE* input = fopen(argv[1],"rb");
     FILE* output = fopen(argv[2], "wb");
     image_t* image = (image_t*)malloc(sizeof(image_t));
+
+    if(strcmp(argv[3], "getInfo") == 0){
+        getInformation(image, input);
+        return 0;
+    }
+
     readBMP(input, image);
     if(strcmp(argv[3], "copy") == 0){
     }else if(strcmp(argv[3], "blur") == 0){

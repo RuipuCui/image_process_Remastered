@@ -34,5 +34,6 @@ void brightImage(image_t* image, int factor);
 void colourToGray(image_t* image);
 void black_white(image_t* image);
 void sepiaFilter(image_t* image);
+void getInformation(image_t* image, FILE* f);
 
 #endif

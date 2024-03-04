@@ -10,3 +10,7 @@
 #command examples:
     ./dict1 images/lena_color.bmp images/lena_sepia.bmp sepiaFilter
     ./dict1 images/lena_color.bmp images/lena_bright.bmp bright 25
+
+#update 4 Mar 2024
+    new function: get information of the bmp image
+    keyword: getInfo

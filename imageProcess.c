@@ -255,3 +255,33 @@ void getInformation(image_t* image, FILE* f){
 
     free(image);
 }
+
+void rotateImage(image_t* image, int degree){
+    if(degree % 90 != 0){
+        fprintf(stderr, "Error: invlaid degree, must be 90, 180 or 270.\n");
+        exit(EXIT_FAILURE);
+    }
+    int i;
+    for(i = 0; i < degree / 90; i++){
+        rotate90Degree(image);
+    }
+    return;
+}
+
+void rotate90Degree(image_t* image){
+    unsigned char* buffer = (unsigned char*)malloc(sizeof(unsigned char*) * image->width * image->height);
+    int size = image->width * image->height;
+    for (int i = 0; i < image->height; i++) {
+        for (int j = 0; j < image->width; j++) {
+            // Calculate new position for each pixel
+            int new_index = j * image->height + (image->height - i - 1);
+            buffer[new_index] = image->grayPixel[i * image->width + j];
+        }
+    }
+    free(image->grayPixel);
+    image->grayPixel = buffer;
+    int temp = image->width;
+    image->width = image->height;
+    image->height = temp;
+    return;
+}

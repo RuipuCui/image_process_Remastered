@@ -35,5 +35,7 @@ void colourToGray(image_t* image);
 void black_white(image_t* image);
 void sepiaFilter(image_t* image);
 void getInformation(image_t* image, FILE* f);
+void rotateImage(image_t* image, int degree);
+void rotate90Degree(image_t* image);
 
 #endif

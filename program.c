@@ -27,6 +27,9 @@ int main(int argc, char* argv[]){
         black_white(image);
     }else if(strcmp(argv[3], "sepiaFilter") == 0){
         sepiaFilter(image);
+    }else if(strcmp(argv[3], "rotate") == 0){
+        int degree = atoi(argv[4]);
+        rotateImage(image, degree);
     }
 
     printImage(output, image);

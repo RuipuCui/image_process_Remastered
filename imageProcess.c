@@ -269,19 +269,45 @@ void rotateImage(image_t* image, int degree){
 }
 
 void rotate90Degree(image_t* image){
-    unsigned char* buffer = (unsigned char*)malloc(sizeof(unsigned char*) * image->width * image->height);
-    int size = image->width * image->height;
-    for (int i = 0; i < image->height; i++) {
-        for (int j = 0; j < image->width; j++) {
-            // Calculate new position for each pixel
-            int new_index = j * image->height + (image->height - i - 1);
-            buffer[new_index] = image->grayPixel[i * image->width + j];
+    if(image->bitDepth == 8){
+        unsigned char* buffer = (unsigned char*)malloc(sizeof(unsigned char*) * image->width * image->height);
+        for (int i = 0; i < image->height; i++) {
+            for (int j = 0; j < image->width; j++) {
+                // Calculate new position for each pixel
+                int new_index = j * image->height + (image->height - i - 1);
+                buffer[new_index] = image->grayPixel[i * image->width + j];
+            }
         }
+        free(image->grayPixel);
+        image->grayPixel = buffer;
+    }else if(image->bitDepth == 24){
+        int size = image->width * image->height;
+        unsigned char** buffer = (unsigned char**)malloc(sizeof(unsigned char*) * size);
+        int i, j;
+        for(i = 0; i < size; i++){
+            buffer[i] = (unsigned char*)malloc(sizeof(unsigned char) * 3);
+        }
+        for (i = 0; i < image->height; i++) {
+            for (j = 0; j < image->width; j++) {
+                int new_index = j * image->height + (image->height - i - 1);
+                int k;
+                for(k = 0; k < 3; k++){
+                    buffer[new_index][k] = image->colourPixel[i * image->width + j][k];
+                }
+            }
+        }
+        for(i = 0; i < size; i++){
+            free(image->colourPixel[i]);
+        }
+        free(image->colourPixel);
+        image->colourPixel = buffer;
     }
-    free(image->grayPixel);
-    image->grayPixel = buffer;
+
     int temp = image->width;
     image->width = image->height;
     image->height = temp;
+
+    memcpy(&image->header[18], &image->width, sizeof(int));  // Update width in header
+    memcpy(&image->header[22], &image->height, sizeof(int));
     return;
 }
